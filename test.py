@@ -7,17 +7,19 @@ Created on Wed Dec  9 10:46:28 2020
 import sqlite3
 import pandas as pd
 
-con = sqlite3.connect('authorsDB.db')
+con = sqlite3.connect('books.db')
 
 c = con.cursor()
 
 
 df = pd.read_csv('author_book_publisher.csv')
-df.to_sql('authors', con, if_exists = 'replace')
+df.to_sql('authors', con, if_exists = 'append')
 
-read = pd.read_sql('authors', con)
+read = pd.read_sql('SELECT * FROM authors WHERE first_name = "Stephen"', con)
 
 
 
 c.close()
 con.close()
+
+print('done')

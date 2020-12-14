@@ -4,9 +4,20 @@ Created on Wed Dec  9 10:46:28 2020
 
 @author: gszufa
 """
+import sqlite3
 import pandas as pd
 
-df = pd.read_csv("author_book_publisher.csv")
+con = sqlite3.connect('authorsDB.db')
+
+c = con.cursor()
 
 
-df.assign(name=df.first_name.str.cat(df.last_name, sep=" ").groupby(["publisher"]).loc[:, "name"].sort_values(ascending=True))
+df = pd.read_csv('author_book_publisher.csv')
+df.to_sql('authors', con, if_exists = 'replace')
+
+read = pd.read_sql('authors', con)
+
+
+
+c.close()
+con.close()
